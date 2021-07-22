@@ -8,8 +8,13 @@ from ConnectParent import Connector
 
 
 class pyppeteer_connection(Connector):
+    # each connection corresponds to a proxy ip
+    # each ip would survive for couple searches
+    # proxy: 123.123.123.123:1234
 
-    def __init__(self):
+    def __init__(self, proxy):
+        self.proxy = proxy
+
         self.url_mainPage = "https://ctrip.com"
         self.template_url = 'https://flights.ctrip.com/international/search/oneway-{C1}-{C2}?depdate={T}'
 
@@ -23,7 +28,7 @@ class pyppeteer_connection(Connector):
 
     
     async def create_browser(self):
-        self.browser = await launch(headless=True, args=['--disable-infobars'])
+        self.browser = await launch(headless=True, args=['--disable-infobars', '--proxy-server={}'.format(self.proxy)])
     
     async def close_browser(self):
         await self.browser.close()
@@ -41,6 +46,9 @@ class pyppeteer_connection(Connector):
             tempPage = await self.browser.newPage()
 
             await tempPage.setUserAgent(self._choose_user_agent())
+            
+            await page.evaluateOnNewDocument('() =>{ Object.defineProperties(navigator, { webdriver:{ get: () => false } }) }')
+
             await tempPage.goto(url, {'waitUntil': 'load'})
 
             self.pages.append(tempPage)
