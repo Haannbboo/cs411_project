@@ -9,9 +9,9 @@ class ProxyFetcher:
 
         self.sources = None
 
+    @staticmethod
+    def fetch(source, url):
 
-    def fetch(self, source, url):
-        
         if source == '89ip':
             html = requests.get(url).text
             doc = pq(html)
