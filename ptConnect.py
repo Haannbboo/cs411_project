@@ -28,7 +28,7 @@ class pyppeteer_connection(Connector):
 
     
     async def create_browser(self):
-        self.browser = await launch(headless=True, args=['--disable-infobars', '--proxy-server={}'.format(self.proxy)])
+        self.browser = await launch(headless=False, args=['--disable-infobars', '--proxy-server={}'.format(self.proxy)])
     
     async def close_browser(self):
         await self.browser.close()
@@ -47,7 +47,7 @@ class pyppeteer_connection(Connector):
 
             await tempPage.setUserAgent(self._choose_user_agent())
             
-            await page.evaluateOnNewDocument('() =>{ Object.defineProperties(navigator, { webdriver:{ get: () => false } }) }')
+            await tempPage.evaluateOnNewDocument('() =>{ Object.defineProperties(navigator, { webdriver:{ get: () => false } }) }')
 
             await tempPage.goto(url, {'waitUntil': 'load'})
 
@@ -85,7 +85,8 @@ class pyppeteer_connection(Connector):
             assert len(self.currPage) == len(self.CTs)
 
 
-    
+    # !!! not usable now
+    # rewriting
     async def check_tickets(self, CT):
         # main func
 
@@ -113,6 +114,11 @@ class pyppeteer_connection(Connector):
     async def click(self, css):
         await self.currPage.click(css)
 
+    
+
+
+        
+    # private methods
 
     def _convert_CT_url(self, CT):
         # convert CT dict to url
@@ -143,4 +149,5 @@ class pyppeteer_connection(Connector):
     
 
 connect = pyppeteer_connection()
-asyncio.get_event_loop().run_until_complete(connect.check_tickets({"C1": "BJS", "C2": "SHA", "T": "2021-07-12"}))
+# asyncio.get_event_loop().run_until_complete(connect.check_tickets({"C1": "BJS", "C2": "SHA", "T": "2021-07-12"}))
+asyncio.get_event_loop().run_until_complete(connect.create_browser())
