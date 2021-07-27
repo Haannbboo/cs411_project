@@ -16,14 +16,19 @@ class Task:
         self.T = T
         self.status = 0
 
+        self.errorCode = 0
+        self.errorCount = 0
+
     def __str__(self):
         return "{} - {} - {}: {}".format(self.C1, self.C2, self.T, self.status)
 
     def getCT(self) -> dict:
-        return {'C1': self.C1, 'C2': self.C2, 'T': self.T, 'status': 0}
+        return {'C1': self.C1, 'C2': self.C2, 'T': self.T, 'status': self.status}
 
     def markCompleted(self) -> None:
         self.status = 1
 
     def markError(self, code: int) -> None:
-        self.status = code
+        self.status = 0.5
+        self.errorCount += 1
+        self.errorCode = code
