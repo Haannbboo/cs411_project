@@ -1,4 +1,5 @@
 from Task import Task
+import random
 
 
 class TaskManager:
@@ -22,7 +23,8 @@ class TaskManager:
     def getTask(self) -> Task:
         # Task might have error, like an error code for errors and exceptions
         # for simplicity status == 0.5 is not considered now
-        task = self.tasks.pop()
+        task = random.choice(self.tasks)
+        self.tasks.remove(task)
         return task
 
     def reportTask(self, processedTask: Task) -> None:
@@ -31,7 +33,14 @@ class TaskManager:
         if processedTask.status == 0:
             self.tasks.append(processedTask)
         if processedTask.status == 0.5:
-            self.errorTasks.append(processedTask)
+            if processedTask.errorCount == 1:  # retry 3 times
+                self.errorTasks.append(processedTask)
+            else:
+                self.tasks.append(processedTask)
+
+    def allCompleted(self):
+
+        return len(self.tasks) == 0
 
 
 '''
