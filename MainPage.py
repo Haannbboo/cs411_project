@@ -8,8 +8,6 @@ app = Flask(__name__)
 # run the app connecting with the flask
 app.config['SECRET_KEY'] = os.urandom(24)
 
-
-
 Base = declarative_base()
 engine1 = create_engine('mysql+pymysql://root:davidxiong@localhost:3306/Airports')
 DBSession = sessionmaker(bind = engine1)

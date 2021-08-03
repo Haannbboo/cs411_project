@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet"
+  href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<script>
+    .sti-tbl-container {
+    height : 100%;
+    overflow : hidden;
+    display : flex;
+    flex-direction: column;
+}
+/* 设置表格的布局方式，用于宽度对齐 */
+.sti-tbl-body>table, .sti-tbl-header>table {
+    table-layout: fixed;
+}
+/* 设置表格内容容器，用于铺满整个剩余空间 */
+.sti-tbl-container .sti-tbl-body {
+    flex-grow : 1;
+    overflow-y : scroll;
+}
+</script>
+<body>
+<div class="container">
+<div class="jumbotron">
+	<div id="container" align = center>
+			<form  method="POST">
+			<h1> Select Your Flight </h1>
+			<h3><i> Scheduling With Higher Efficiency </i></h3>
+            <h5> <a href="/addflight">Add A New Flight</a></h5>
+		<div id="jumbotron" style="text-align:center">
+		</div>
+            </form>
+    </div>
+    </div>
+    <div class="sti-tbl-header" style="padding-right:17px;">
+        <table class="table table-bordered" style="margin-bottom: 0px;border-bottom-style: none;">
+            <tr>
+                <th  style="width : 10%;"> Departure </th>
+                <th  style="width : 10%;"> Destination </th>
+                <th  style="width : 15%;"> Departure Time </th>
+                <th  style="width : 15%"> Arrival Time </th>
+                <th  style="width : 25%"> Flight Number </th>
+                <th  style="width : 25%"> Airline Company</th>
+            </tr>
+        </table>
+    </div>
+        <table class="table table-bordered">
+            <tbody>
+            {% for o in data %}
+                <tr>
+                    <th style="width : 15%;" > {{ o[0] }} </th>
+                    <td style="width : 15%;" > {{ o[1] }} </td>
+                    <td style="width : 15%;" > {{ o[2] }} </td>
+                    <td style="width : 15%;" > {{ o[3] }} </td>
+                    <td style="width : 15%;" > {{ o[4] }} </td>
+                    <td style="width : 20%;" > {{ o[5] }} </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
