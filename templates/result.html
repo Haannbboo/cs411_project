@@ -27,15 +27,18 @@
 <div class="container">
 <div class="jumbotron">
 	<div id="container" align = center>
-			<form  method="POST">
 			<h1> Select Your Flight </h1>
 			<h3><i> Scheduling With Higher Efficiency </i></h3>
-            <h5> <a href="/addflight">Add A New Flight</a></h5>
 		<div id="jumbotron" style="text-align:center">
 		</div>
-            </form>
     </div>
     </div>
+    <form method="post">
+        <input type="text" name = "from" placeholder="FROM">
+        <input type="text" name = "to" placeholder="TO">
+        <input type="date" name = "date" placeholder="DATE">
+		<input type="submit" value="query">
+    </form>
     <div class="sti-tbl-header" style="padding-right:17px;">
         <table class="table table-bordered" style="margin-bottom: 0px;border-bottom-style: none;">
             <tr>
@@ -60,14 +63,8 @@
                     <td style="width : 10%;" > {{ o[3] }} </td>
                     <td style="width : 10%;" > {{ o[4] }} </td>
                     <td style="width : 10%;" > {{ o[5] }} </td>
-                    <td style="width : 10%"  > {{ o[6] }}</td>
-                    <script>
-                        function AddParam(obj)
-                        {
-                        obj.href += $("#ApID").val();
-                        }
-                    </script>
-                    <td style="width : 5%;"> <a href='/Book/' >Book<a/> </td>
+                    <td style="width : 10%"  > {{ o[9] }} </td>
+                    <td style="width : 5%;"> <button type="button" onclick="window.location.href='{{ url_for('trigger') }}';">Forward</button> </td>
                 </tr>
             {% endfor %}
             </tbody>
