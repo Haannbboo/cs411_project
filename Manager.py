@@ -23,12 +23,14 @@ mycursor = mydb.cursor()
 # engine1 = create_engine('mysql+pymysql://root:david0811@localhost:3306/Airports')
 # DBSession = sessionmaker(bind=engine1)
 
+# SQL for insertTrig
+# STARTS HERE
 try:
     SQL = "DROP TRIGGER insertTrig;"
     mycursor.execute(SQL)
 except pymysql.err.OperationalError:
     pass
-# SET @flight = (SELECT id FROM flights WHERE FlightNumber = new.FlightNumber AND deptTime = new.deptTime);
+
 insertTrig = """
 CREATE TRIGGER insertTrig
     BEFORE INSERT ON flights
@@ -37,13 +39,16 @@ CREATE TRIGGER insertTrig
         IF EXISTS(SELECT id FROM flights WHERE FlightNumber = new.FlightNumber AND deptTime = new.deptTime) THEN
             SIGNAL SQLSTATE '45000';
         END IF;
-        IF @flight IS NULL THEN
-            SET @maxID = (SELECT MAX(id) FROM flights);
-            SET new.id = @maxID + 1;
+
+        SET @maxID = (SELECT MAX(id) FROM flights);
+        IF @maxID IS NULL THEN
+            SET @maxID = 0;
         END IF;
+        SET new.id = @maxID + 1;
     END;
 """
 mycursor.execute(insertTrig)
+# ENDS HERE
 
 
 class Manager():
@@ -72,14 +77,14 @@ class Manager():
         FlightNumber = form.get("FlightNumber", "")
         Airplane = form.get("Airplane", "")
         Airline = form.get("Airline", "")
-        deptTime = form.get("deptTime", "")
+        deptTime = form.get("deptTime", "1900-01-01 00:00")
         deptAirport = form.get("deptAirport", "")
-        arrTime = form.get("arrTime", "")
+        arrTime = form.get("arrTime", "1900-01-01 00:00")
         arrAirport = form.get("arrAirport", "")
-        Price = form.get("Price", "")
+        Price = form.get("Price", 0)
         AvailableSeats = form.get("AvailableSeats", 0)
 
-        SQL = "INSERT INTO flights VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', {}, 0)".format(FlightNumber,
+        SQL = "INSERT INTO flights VALUES (0, '{}', '{}', '{}', '{}', '{}', '{}', '{}', {}, {})".format(FlightNumber,
                                                                                                            Airplane,
                                                                                                            Airline,
                                                                                                            deptTime,
@@ -118,7 +123,7 @@ class Manager():
         Price = form.get("Price", flight.get("Price"))
         AvailableSeats = form.get("AvailableSeats", flight.get("AvailableSeats"))
 
-        SQL = "UPDATE flights SET FlightNumber = '{FlightNumber}', Airplane = '{Airplane}', Airline = '{Airline}', deptTime = '{deptTime}', deptAirport = '{deptAirport}', arrTime = '{arrTime}', arrAirport = '{arrAirport}', Price = '{Price}', AvailableSeats = {AvailableSeats} WHERE id = {fid};".format(
+        SQL = "UPDATE flights SET FlightNumber = '{FlightNumber}', Airplane = '{Airplane}', Airline = '{Airline}', deptTime = '{deptTime}', deptAirport = '{deptAirport}', arrTime = '{arrTime}', arrAirport = '{arrAirport}', Price = {Price}, AvailableSeats = {AvailableSeats} WHERE id = {fid};".format(
             FlightNumber=FlightNumber, Airplane=Airplane, Airline=Airline, deptTime=deptTime, deptAirport=deptAirport,
             arrTime=arrTime, arrAirport=arrAirport, Price=Price, AvailableSeats=AvailableSeats, fid=fid)
         print(SQL)
@@ -128,8 +133,8 @@ class Manager():
 
 
 m = Manager()
-# m.edit_flight(0, {'Price': 100, 'FlightNumber': 123, 'AvailableSeats': 20})
+m.edit_flight(1, {'Price': 1000, 'FlightNumber': 'HB001', 'AvailableSeats': 20})
 m.add_flight(
-    {'FlightNumber': 'HB9999', 'Airplane': 'Airbus 999', 'Airline': 'HB Airline', 'deptTime': '2021-09-01 12:25',
-     'deptAirport': 'CKX', 'arrTime': '2021-09-01 15:55', 'arrAirport': 'XYZ', 'Price': '9999', 'AvailableSeats': 120})
+    {'FlightNumber': 'HB120989032', 'Airplane': 'Airbus 999', 'Airline': 'HB Airline', 'deptTime': '2021-09-01 12:25',
+     'deptAirport': 'CKX', 'arrTime': '2021-09-01 15:55', 'arrAirport': 'XYZ', 'Price': '12', 'AvailableSeats': 100})
 # m.delete_flight(6)
