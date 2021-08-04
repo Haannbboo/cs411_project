@@ -3,25 +3,66 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from flask import Flask, render_template, request, url_for,redirect,session, make_response, Response,config
 import os
+from Manager import Manager
+from User import User
 
 app = Flask(__name__)
 # run the app connecting with the flask
 app.config['SECRET_KEY'] = os.urandom(24)
 
-Base = declarative_base()
-engine1 = create_engine('mysql+pymysql://root:davidxiong@localhost:3306/Airports')
-DBSession = sessionmaker(bind = engine1)
+@app.route('/user',methods=['POST','GET'])
+def user():
+    u = User()
+    if request.method == 'POST':
+        if request.form['btn'] == 'Query':
+            fromLocation = request.form.get('from')
+            toLocation = request.form.get('to')
+            Date = request.form.get('date')
+            return render_template('result.html', data = u.QueryByLocationDate(fromLocation,toLocation,Date))
+        else:
+            FID = request.form.get('fid')
+            session["FID"] = FID
+            return redirect("/Book")
+    else:
+        return render_template('result.html',data = u.get_all())
 
-import mysql.connector
+@app.route('/',methods=['POST','GET'])
+def manage():
+    m = Manager()
+    result = m.get_all()
+    return render_template('manage.html',data = result)
 
-mydb = mysql.connector.connect(
-    host = 'localhost',
-    port = 3306,
-    user = 'root',
-    passwd = 'david0811',
-    database = 'Airports',)
+@app.route('/deleteFlight',methods=['POST','GET'])
+def deleteFlight():
+    if request.method == 'POST':
+        FID = request.form.get('FID')
+        print(FID)
+        m = Manager()
+        m.delete_flight(FID)
+        return redirect('/deleteFlight')
+    else:
+        return render_template('DeleteFlight.html')
 
-mycursor = mydb.cursor()
+
+@app.route('/addFlight',methods=['POST','GET'])
+def addFlight():
+    if request.method == 'POST':
+        m = Manager()
+        m.add_flight(request.form)
+        return redirect('/addFlight')
+    else:
+        return render_template('AddFlight.html')
+
+@app.route('/Book',methods=['POST','GET'])
+def book():
+    FID = session.get('FID')
+    u = User()
+    return render_template('booking.html',data = u.QueryByFID(FID))
+
+'''
+@app.route('/edit', methods=['POST','GET'])
+def edit():
+'''
 
 
 
