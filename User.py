@@ -10,11 +10,11 @@ import pymysql
 from pymysql.constants import CLIENT
 
 mydb = pymysql.connect(
-    host='localhost',
-    port=3306,
+    host='35.202.82.204',
+
     user='root',
-    passwd='veGryq-roccab-tawsi5',
-    database='test',
+    passwd='uiuccs411',
+    database='flightBookingDatabase',
     client_flag=CLIENT.MULTI_STATEMENTS)
 
 mycursor = mydb.cursor()
@@ -83,6 +83,16 @@ class User():
 
         self.uid = -1
 
+    def get_user_info(self, uid: int):
+        SQL = "SELECT * FROM users WHERE uid = {};".format(uid)
+        cursor = mydb.cursor()
+        cursor.execute(SQL)
+        result = cursor.fetchall()
+        if len(result) == 0:
+            print("uid not in database")
+            return None
+        return result[0]
+
     def log_in(self, username: str, password: str):
         pwdhash = hashlib.md5(password.encode("utf-8")).hexdigest()
 
@@ -134,6 +144,8 @@ class User():
         except pymysql.err.OperationalError as e:
             if e.args[0] == 1644:
                 return 0, "username_exists"
+            else:
+                print(e)
         mydb.commit()
 
 
@@ -214,6 +226,7 @@ class User():
         return True
 
     def checkBooking(self):
+
         SQL = """
         SELECT deptTime, FlightNumber FROM flights LEFT OUTER JOIN bookings ON flights.id = bookings.fid WHERE uid = {} ORDER BY deptTime
         """.format(self.uid)
@@ -230,9 +243,9 @@ class User():
 
 
 u = User()
-u.log_in("asadsda", "abcedasdasf")
+u.log_in("hb", "123456")
 # u.QueryByFlightNum("PN6213", "2021-08-12")
-# u.Book(1, 2000)
-u.checkBooking()
+print(u.Book(1, 1000000000))
+# u.checkBooking()
 
-# u.register({"username": "asadsda", "password": "abcedasdasf", "password_rec": "abcedasdasf", "email": "abc@uiuc.edu", "roll": "manager"})
+# u.register({"username": "hb", "password": "123456", "password_rec": "123456", "email": "hb@uiuc.edu", "roll": "manager"})
