@@ -10,6 +10,40 @@ app = Flask(__name__)
 # run the app connecting with the flask
 app.config['SECRET_KEY'] = os.urandom(24)
 
+@app.route('/',methods=['POST','GET'])
+def login():
+    if request.method == 'POST':
+        u = User()
+        username = request.form.get('username')
+        password = request.form.get('psw')
+        result = u.log_in(username,password)
+        if result[0] == 0:
+            return result[1]
+        if result[0] == 0.5:
+            return "You Need To Sign Up For An Account"
+        else:
+            session['username'] = username;
+            if result[1] == "user":
+                return redirect('/user')
+            else:
+                return redirect('/manage')
+    else:
+        return render_template('Login.html')
+
+
+@app.route('/signup',methods=['POST','GET'])
+def sign_up():
+    if request.method == "POST":
+        u = User()
+        result = u.register(request.form)
+        if result[0] == 0:
+            return result[1]
+        else:
+            return redirect('/')
+    else:
+        return render_template('SignUp.html')
+
+
 @app.route('/user',methods=['POST','GET'])
 def user():
     u = User()
@@ -24,12 +58,13 @@ def user():
             session["FID"] = FID
             return redirect("/Book")
     else:
-        return render_template('result.html',data = u.get_all())
+        return render_template('result.html',data = u.get_all(), name=session.get('username'))
 
-@app.route('/',methods=['POST','GET'])
+@app.route('/manage',methods=['POST','GET'])
 def manage():
     m = Manager()
     result = m.get_all()
+    print(result)
     return render_template('manage.html',data = result)
 
 @app.route('/deleteFlight',methods=['POST','GET'])
@@ -55,9 +90,17 @@ def addFlight():
 
 @app.route('/Book',methods=['POST','GET'])
 def book():
-    FID = session.get('FID')
-    u = User()
-    return render_template('booking.html',data = u.QueryByFID(FID))
+    if request.method == 'POST':
+        if request.form['btn'] == 'No':
+            return redirect('/Book')
+        else:
+            u = User()
+            u.Book()
+            return redirect('/user')
+    else:
+        FID = session.get('FID')
+        u = User()
+        return render_template('booking.html',data = u.QueryByFID(FID))
 
 '''
 @app.route('/edit', methods=['POST','GET'])

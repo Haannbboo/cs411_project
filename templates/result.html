@@ -29,6 +29,8 @@
 	<div id="container" align = center>
 			<h1> Select Your Flight </h1>
 			<h3><i> Scheduling With Higher Efficiency </i></h3>
+        <h3><i> Welcome, {{ name }} </i></h3>
+        <h5><a href="/"> Log Out</a></h5>
 		<div id="jumbotron" style="text-align:center">
 		</div>
     </div>
@@ -57,15 +59,15 @@
             <tbody>
             {% for o in data %}
                 <tr>
-                    <th style="width : 10%;" > {{ o[0] }} </th>
-                    <td style="width : 10%;" > {{ o[1] }} </td>
+                    <th style="width : 10%;" > {{ o[1] }} </th>
                     <td style="width : 10%;" > {{ o[2] }} </td>
                     <td style="width : 10%;" > {{ o[3] }} </td>
                     <td style="width : 10%;" > {{ o[4] }} </td>
                     <td style="width : 10%;" > {{ o[5] }} </td>
-                    <td style="width : 10%"  > {{ o[6] }} </td>
+                    <td style="width : 10%;" > {{ o[6] }} </td>
+                    <td style="width : 10%"  > {{ o[7] }} </td>
                     <td style="width : 5%;"><form action="{{ url_for('user')}}" method="POST">
-                        <input type="hidden" name="fid" value="{{o[9]}}">
+                        <input type="hidden" name="fid" value="{{ o[0] }}">
                         <input type="submit" name='btn' value="Book"> </td>
                 </tr>
             {% endfor %}
