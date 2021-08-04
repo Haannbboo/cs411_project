@@ -74,14 +74,16 @@ CREATE TRIGGER addBookingTrig
     END;
 """
 mycursor.execute(addBookingTrig)
+
+
 # ENDS HERE
 
 class User():
-    def __init__(self):
+    def __init__(self, uid=-1):
         self.username = None
         self.pwdhash = None
 
-        self.uid = -1
+        self.uid = uid
 
     def get_user_info(self, uid: int):
         SQL = "SELECT * FROM users WHERE uid = {};".format(uid)
@@ -121,11 +123,11 @@ class User():
     def register(self, form: dict):
         # need to redirect to log_in page to log in again
         # form: request.form
-        username = form.get("username", "user"+hashlib.md5(str(time.time()).encode('utf-8')).hexdigest())
+        username = form.get("username", "user" + hashlib.md5(str(time.time()).encode('utf-8')).hexdigest())
         password = form.get("password")
         password_rec = form.get("password_rec")
         email = form.get("email")
-        roll = form.get("roll", "user")
+        role = form.get("roll", "user")
 
         if password is None or password_rec is None:
             return 0, "no_password"
@@ -137,7 +139,7 @@ class User():
         pwdHash = hashlib.md5(password.encode('utf-8')).hexdigest()
 
         cursor = mydb.cursor()
-        SQL = "INSERT INTO users VALUES (1, '{}', '{}', '{}', '{}')".format(username, pwdHash, roll, email)
+        SQL = "INSERT INTO users VALUES (1, '{}', '{}', '{}', '{}')".format(username, pwdHash, email, role)
         print(SQL)
         try:
             cursor.execute(SQL)
@@ -148,10 +150,7 @@ class User():
                 print(e)
         mydb.commit()
 
-
         return 1, "success"
-
-
 
     def get_all(self):
         SQL = "SELECT * from flights"
@@ -204,7 +203,7 @@ class User():
 
     def Book(self, fid: int, bookPrice: int):
         # R, W
-        if self.uid is None:
+        if self.uid == -1:
             return False
 
         SQL = """
@@ -236,7 +235,6 @@ class User():
         result = cursor.fetchall()
         print(result)
         return result
-
 
     def UnBook(self, fid: int):
         return
