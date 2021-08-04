@@ -14,13 +14,17 @@ app.config['SECRET_KEY'] = os.urandom(24)
 def user():
     u = User()
     if request.method == 'POST':
-        fromLocation = request.form.get('from')
-        toLocation = request.form.get('to')
-        Date = request.form.get('date')
-        return render_template('result.html', data = u.QueryByLocationDate(fromLocation,toLocation,Date))
+        if request.form['btn'] == 'Query':
+            fromLocation = request.form.get('from')
+            toLocation = request.form.get('to')
+            Date = request.form.get('date')
+            return render_template('result.html', data = u.QueryByLocationDate(fromLocation,toLocation,Date))
+        else:
+            FID = request.form.get('fid')
+            session["FID"] = FID
+            return redirect("/Book")
     else:
         return render_template('result.html',data = u.get_all())
-
 
 @app.route('/',methods=['POST','GET'])
 def manage():
@@ -51,7 +55,9 @@ def addFlight():
 
 @app.route('/Book',methods=['POST','GET'])
 def book():
-    return "book"
+    FID = session.get('FID')
+    u = User()
+    return render_template('booking.html',data = u.QueryByFID(FID))
 
 '''
 @app.route('/edit', methods=['POST','GET'])

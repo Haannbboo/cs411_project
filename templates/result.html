@@ -37,7 +37,7 @@
         <input type="text" name = "from" placeholder="FROM">
         <input type="text" name = "to" placeholder="TO">
         <input type="date" name = "date" placeholder="DATE">
-		<input type="submit" value="query">
+		<input type="submit" name = 'btn' value="Query">
     </form>
     <div class="sti-tbl-header" style="padding-right:17px;">
         <table class="table table-bordered" style="margin-bottom: 0px;border-bottom-style: none;">
@@ -63,8 +63,10 @@
                     <td style="width : 10%;" > {{ o[3] }} </td>
                     <td style="width : 10%;" > {{ o[4] }} </td>
                     <td style="width : 10%;" > {{ o[5] }} </td>
-                    <td style="width : 10%"  > {{ o[9] }} </td>
-                    <td style="width : 5%;"> <button type="button" onclick="window.location.href='{{ url_for('trigger') }}';">Forward</button> </td>
+                    <td style="width : 10%"  > {{ o[6] }} </td>
+                    <td style="width : 5%;"><form action="{{ url_for('user')}}" method="POST">
+                        <input type="hidden" name="fid" value="{{o[9]}}">
+                        <input type="submit" name='btn' value="Book"> </td>
                 </tr>
             {% endfor %}
             </tbody>
