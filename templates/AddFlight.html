@@ -18,14 +18,16 @@
 </div><div align = center>
 
 		<div style="text-align:center" id = 'jumbotron'>
-		<form action="{{ url_for('addflight')}}" method="post">
-	    <input type="text" name="departure" placeholder="departure" />
-        <input type="text" name="destination" placeholder="destination">
-		<input type="text" name="dep_time" placeholder ='departure time'>
-        <input type="text" name="arr_time" placeholder="time of arrival" size="25"/>
-		<input type="text" name="flight_number" placeholder="flight number" size="25"/>
-			<input type="text" name="available_seats" placeholder="available_seats" size="25"/>
-			<input type="text" name="price" placeholder="flight price" size="25"/>
+		<form action="{{ url_for('addFlight')}}" method="post">
+	    <input type="text" name="FlightNumber" placeholder="Flight Number" />
+        <input type="text" name="Airplane" placeholder="Airplane">
+		<input type="text" name="Airline" placeholder ='Airline'>
+        <input type="text" name="deptTime" placeholder="deptTime"/>
+		<input type="text" name="deptAirport" placeholder="deptAirport"/>
+		<input type="text" name="arrTime" placeholder="arrTime"/>
+		<input type="text" name="arrAirport" placeholder="arrAirport"/>
+		<input type="text" name="Price" placeholder="Price"/>
+		<input type="text" name="AvailableSeats" placeholder="AvailabeSeats"/>
 		<input type="submit" value="Add Flight">
 		</div>
 </body>

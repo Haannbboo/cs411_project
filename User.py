@@ -11,8 +11,8 @@ mydb = pymysql.connect(
     host='localhost',
     port=3306,
     user='root',
-    passwd='',
-    database='test', )
+    passwd='david0811',
+    database='Airports', )
 
 mycursor = mydb.cursor()
 
@@ -32,7 +32,9 @@ class User():
         pass
 
     def get_all(self):
-        SQL = "SELECT * from flights"
+        SQL = "SELECT * from test"
+        mycursor.execute(SQL)
+        return mycursor.fetchall()
 
     def QueryByLocationDate(self, fromLocation, toLocation, date, order="time"):
         # Date: '2021-01-01'
@@ -47,7 +49,7 @@ class User():
         if order == "price":
             orderby = " ORDER BY Price DESC"
 
-        SQL = "SELECT * FROM flights WHERE deptAirport='{}' AND arrAirport='{}' AND deptTime BETWEEN '{}' AND '{}'{};".format(
+        SQL = "SELECT * FROM test WHERE deptAirport='{}' AND arrAirport='{}' AND deptTime BETWEEN '{}' AND '{}'{};".format(
             fromLocation, toLocation, btime, etime, orderby)
         print(SQL)
         cursor = mydb.cursor()
@@ -62,7 +64,7 @@ class User():
         # Output: dict
         btime = date + ' 00:00'
         etime = date + ' 23:59'
-        SQL = "SELECT * FROM flights WHERE FlightNumber='{}' AND deptTime BETWEEN '{}' AND '{}'".format(flightNumber, btime, etime)
+        SQL = "SELECT * FROM test WHERE FlightNumber='{}' AND deptTime BETWEEN '{}' AND '{}'".format(flightNumber, btime, etime)
         print(SQL)
 
         cursor = mydb.cursor(cursor=pymysql.cursors.DictCursor)
@@ -81,4 +83,6 @@ class User():
 
 
 u = User()
+'''
 u.QueryByFlightNum("PN6213", "2021-08-12")
+'''

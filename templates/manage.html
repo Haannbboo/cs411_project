@@ -28,10 +28,12 @@
 <div class="jumbotron">
 	<div id="container" align = center>
 			<form  method="POST">
-			<h1> Select Your Flight </h1>
+			<h1> Administrator System </h1>
 			<h3><i> Scheduling With Higher Efficiency </i></h3>
-            <h5> <a href="/addflight">Add A New Flight</a></h5>
-                <h5> <a href="/deleteFlight"> Delete Flight </a><h5>
+            <h5> <a href="/addFlight">Add A New Flight</a></h5>
+            <h5> <a href="/deleteFlight"> Delete Flight </a><h5>
+            <h5> <a href="/user"> User </a><h5>
+
 		<div id="jumbotron" style="text-align:center">
 		</div>
             </form>
@@ -47,7 +49,7 @@
                 <th  style="width : 15%"> Departure Airport </th>
                 <th  style="width : 10%"> Arrival Time </th>
                 <th  style="width : 10%"> Arrival Airport </th>
-                <th  style="width : 5"> Book Your Ticket</th>
+                <th  style="width : 5"> Edit </th>
             </tr>
         </table>
     </div>
@@ -62,7 +64,7 @@
                     <td style="width : 10%;" > {{ o[4] }} </td>
                     <td style="width : 10%;" > {{ o[5] }} </td>
                     <td style="width : 10%"  > {{ o[6] }}</td>
-                    <td style="width : 5%;"  > <input type="submit" value="Edit"></td>
+                    <td style="width : 5%;"  > <input type="submit" href='/edit' value="Edit"></td>
                 </tr>
             {% endfor %}
             </tbody>
