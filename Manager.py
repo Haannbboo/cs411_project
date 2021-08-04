@@ -9,8 +9,8 @@ mydb = pymysql.connect(
     host='localhost',
     port=3306,
     user='root',
-    passwd='veGryq-roccab-tawsi5',
-    database='test', )
+    passwd='david0811',
+    database='Airports', )
 
 mycursor = mydb.cursor()
 
@@ -22,7 +22,7 @@ mycursor = mydb.cursor()
 # Base = declarative_base()
 # engine1 = create_engine('mysql+pymysql://root:david0811@localhost:3306/Airports')
 # DBSession = sessionmaker(bind=engine1)
-
+'''
 try:
     SQL = "DROP TRIGGER insertTrig;"
     mycursor.execute(SQL)
@@ -44,7 +44,7 @@ CREATE TRIGGER insertTrig
     END;
 """
 mycursor.execute(insertTrig)
-
+'''
 
 class Manager():
 
@@ -52,13 +52,13 @@ class Manager():
         pass
 
     def get_all(self):
-        SQL = "SELECT * from flights"
+        SQL = "SELECT * from test"
         mycursor.execute(SQL)
         return mycursor.fetchall()
 
     def delete_flight(self, fid: int):
         cursor = mydb.cursor()
-        SQL = "DELETE FROM flights WHERE id = " + str(fid)
+        SQL = "DELETE FROM test WHERE id = " + str(fid)
         print(SQL)
         cursor.execute(SQL)
         mydb.commit()
@@ -79,7 +79,7 @@ class Manager():
         Price = form.get("Price", "")
         AvailableSeats = form.get("AvailableSeats", 0)
 
-        SQL = "INSERT INTO flights VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', {}, 0)".format(FlightNumber,
+        SQL = "INSERT INTO test VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', {}, 0)".format(FlightNumber,
                                                                                                            Airplane,
                                                                                                            Airline,
                                                                                                            deptTime,
@@ -87,7 +87,7 @@ class Manager():
                                                                                                            arrTime,
                                                                                                            arrAirport,
                                                                                                            Price,
-                                                                                                           AvailableSeats,)
+                                                                                          AvailableSeats,)
         print(SQL)
         try:
             cursor.execute(SQL)
@@ -129,7 +129,10 @@ class Manager():
 
 m = Manager()
 # m.edit_flight(0, {'Price': 100, 'FlightNumber': 123, 'AvailableSeats': 20})
+'''
 m.add_flight(
-    {'FlightNumber': 'HB9999', 'Airplane': 'Airbus 999', 'Airline': 'HB Airline', 'deptTime': '2021-09-01 12:25',
-     'deptAirport': 'CKX', 'arrTime': '2021-09-01 15:55', 'arrAirport': 'XYZ', 'Price': '9999', 'AvailableSeats': 120})
+  {'FlightNumber': 'HB9999', 'Airplane': 'Airbus 999', 'Airline': 'HB Airline', 'deptTime': '2021-09-01 12:25',
+    'deptAirport': 'CKX', 'arrTime': '2021-09-01 15:55', 'arrAirport': 'XYZ', 'Price': '9999', 'AvailableSeats': 120})
 # m.delete_flight(6)
+#print(m.get_all())
+'''

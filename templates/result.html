@@ -49,6 +49,12 @@
             </tr>
         </table>
     </div>
+        <div style="text-align:left" id = 'jumbotron'>
+		<form action="{{ url_for('query')}}" method="POST">
+	    <input type="text" name="SearchFlight" placeholder="FlightNumber"/>
+		<input type="submit" value="SearchFlight">
+		</div>
+    <button> </button>
         <table class="table table-bordered">
             <tbody>
             {% for o in data %}

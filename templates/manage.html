@@ -31,6 +31,7 @@
 			<h1> Select Your Flight </h1>
 			<h3><i> Scheduling With Higher Efficiency </i></h3>
             <h5> <a href="/addflight">Add A New Flight</a></h5>
+                <h5> <a href="/deleteFlight"> Delete Flight </a><h5>
 		<div id="jumbotron" style="text-align:center">
 		</div>
             </form>
@@ -39,12 +40,13 @@
     <div class="sti-tbl-header" style="padding-right:17px;">
         <table class="table table-bordered" style="margin-bottom: 0px;border-bottom-style: none;">
             <tr>
-                <th  style="width : 10%;"> Departure </th>
-                <th  style="width : 10%;"> Destination </th>
-                <th  style="width : 15%;"> Departure Time </th>
-                <th  style="width : 15%"> Arrival Time </th>
-                <th  style="width : 25%"> Flight Number </th>
-                <th  style="width : 25%"> Airline Company</th>
+                <th  style="width : 15%;"> Flight Number </th>
+                <th  style="width : 15%;"> Airplane Type </th>
+                <th  style="width : 15%;"> Airline Company </th>
+                <th  style="width : 15%"> Departure Time </th>
+                <th  style="width : 15%"> Departure Airport </th>
+                <th  style="width : 10%"> Arrival Time </th>
+                <th  style="width : 10%"> Arrival Airport </th>
                 <th  style="width : 5"> Book Your Ticket</th>
             </tr>
         </table>
@@ -53,12 +55,13 @@
             <tbody>
             {% for o in data %}
                 <tr>
-                    <th style="width : 15%;" > {{ o[0] }} </th>
-                    <td style="width : 15%;" > {{ o[1] }} </td>
-                    <td style="width : 15%;" > {{ o[2] }} </td>
-                    <td style="width : 15%;" > {{ o[3] }} </td>
-                    <td style="width : 15%;" > {{ o[4] }} </td>
-                    <td style="width : 20%;" > {{ o[5] }} </td>
+                    <th style="width : 10%;" > {{ o[0] }} </th>
+                    <td style="width : 10%;" > {{ o[1] }} </td>
+                    <td style="width : 10%;" > {{ o[2] }} </td>
+                    <td style="width : 10%;" > {{ o[3] }} </td>
+                    <td style="width : 10%;" > {{ o[4] }} </td>
+                    <td style="width : 10%;" > {{ o[5] }} </td>
+                    <td style="width : 10%"  > {{ o[6] }}</td>
                     <td style="width : 5%;"  > <input type="submit" value="Edit"></td>
                 </tr>
             {% endfor %}
