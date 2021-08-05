@@ -94,8 +94,8 @@ def book():
         if request.form['btn'] == 'No':
             return redirect('/Book')
         else:
-            u = User()
-            u.Book()
+            u = User(session.get('username'))
+            u.Book(session.get('FID'),666)
             return redirect('/user')
     else:
         FID = session.get('FID')
